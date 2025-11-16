@@ -1,0 +1,950 @@
+/* CSS 变量定义，便于主题管理和样式调整 */
+:root {
+    --primary-color: #6a5acd; /* 主题色，例如紫色 */
+    --secondary-color: #9370db; /* 辅助色，较浅的紫色 */
+    --background-color: #f5f5f5; /* 页面背景色 */
+    --card-color: #ffffff; /* 卡片背景色 */
+    --text-color: #333333; /* 主要文字颜色 */
+    --border-radius: 8px; /* 元素圆角半径 */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    --header-height: 60px; /* 定义一个CSS变量用于header高度 */
+    --container-gap: 15px; /* 定义一个CSS变量用于容器间距 */
+    --container-padding: 15px; /* 定义一个CSS变量用于容器内边距 */
+
+    /* 新增：画师卡片的固定尺寸 */
+    --artist-card-width: 220px; 
+    --artist-card-height: 250px; /* 稍微高一点，容纳文字 */
+}
+
+/* 全局样式重置和基础高度设置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 盒模型为边框盒，方便布局 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 字体设置 */
+    /* 强制重置 min-width 和 min-height，排除隐性收缩 */
+    /* 这是解决 Grid 和 Flex 布局中收缩问题的关键 */
+    min-width: 0; 
+    min-height: 0;
+}
+
+html, body {
+    height: 100%; /* 确保html和body占据整个视口高度 */
+    width: 100%; /* 确保html和body占据整个视口宽度 */
+    overflow: hidden; /* 防止html/body出现滚动条，由Grid容器内部控制 */
+}
+
+body {
+    background-color: var(--background-color); /* 应用背景色变量 */
+    color: var(--text-color); /* 应用文字颜色变量 */
+    line-height: 1.6; /* 行高设置 */
+}
+
+/* 整体布局容器，使用 Grid 布局 */
+.container {
+    display: grid;
+    /* 定义三列：左侧边栏、主内容区、右侧的包裹容器 */
+    grid-template-columns: 300px 1fr 350px; 
+    grid-template-rows: var(--header-height) 1fr; /* header高度 + 剩余空间 */
+    height: 100vh; /* 容器高度占满视口 */
+    width: 100vw; /* 容器宽度占满视口 */
+    gap: var(--container-gap); /* 网格项之间的间距 */
+    padding: var(--container-padding); /* 容器内边距 */
+    /* 确保容器本身不被内容挤压而出现滚动条 */
+    overflow: hidden; 
+}
+
+/* 页面顶部 Header 区域 */
+header {
+    grid-column: 1 / 4; /* 占据所有三列 */
+    background-color: var(--primary-color); /* 应用主题色 */
+    color: white; /* 文字颜色为白色 */
+    display: flex; /* Flex 布局，使内容水平排列 */
+    align-items: center; /* 垂直居中 */
+    justify-content: space-between; /* 子项两端对齐 */
+    padding: 0 20px; /* 内边距 */
+    border-radius: var(--border-radius); /* 圆角 */
+    box-shadow: var(--shadow); /* 阴影 */
+    flex-shrink: 0; /* 确保header不收缩 */
+    min-width: 0; /* 确保在必要时其内容能溢出，而不是自身被压缩 */
+}
+
+/* 网站 Logo 样式 */
+.logo {
+    font-size: 1.5rem; /* 字号 */
+    font-weight: bold; /* 加粗 */
+    flex-shrink: 0; /* 确保Logo不收缩 */
+}
+
+/* 搜索栏容器 */
+.search-bar {
+    flex: 1; /* 占据可用空间 */
+    max-width: 400px; /* 最大宽度 */
+    margin: 0 20px; /* 左右外边距 */
+    min-width: 0; /* 确保在必要时其内容能溢出，而不是自身被压缩 */
+}
+
+/* 搜索输入框样式 */
+.search-bar input {
+    width: 100%; /* 宽度占满父容器 */
+    padding: 8px 15px; /* 内边距 */
+    border: none; /* 无边框 */
+    border-radius: 20px; /* 大圆角，形成药丸状 */
+    outline: none; /* 聚焦时无轮廓 */
+}
+
+/* 用户操作按钮组 */
+.user-actions {
+    flex-shrink: 0; /* 确保按钮组不收缩 */
+}
+.user-actions button {
+    margin-left: 15px; /* 左外边距 */
+}
+
+/* 左侧边栏 */
+.sidebar {
+    background-color: var(--card-color); /* 应用卡片背景色 */
+    border-radius: var(--border-radius); /* 圆角 */
+    box-shadow: var(--shadow); /* 阴影 */
+    padding: 20px; /* 内边距 */
+    height: 100%; /* 占据其Grid单元格的全部高度 */
+    overflow-y: auto; /* 内容超出时垂直滚动 */
+    display: flex; /* 使用Flex布局让内容垂直排列 */
+    flex-direction: column;
+    flex-shrink: 0; /* 确保侧边栏不收缩 */
+    min-width: 0; /* 确保在必要时其内容能溢出，而不是自身被压缩 */
+    grid-column: 1; /* 占据第一列 */
+    grid-row: 2; /* 占据第二行 */
+}
+.sidebar .sort-options { /* 确保排序选项不会挤压列表 */
+    flex-shrink: 0; /* 不收缩 */
+    margin-bottom: 20px;
+}
+.sidebar h2 {
+    flex-shrink: 0; /* 不收缩 */
+    margin-bottom: 15px; /* 下外边距 */
+    color: var(--primary-color); /* 应用主题色 */
+    border-bottom: 1px solid #eee; /* 底部细线 */
+    padding-bottom: 10px; /* 底部内边距 */
+}
+.artist-list { /* 让画师列表占据剩余空间并滚动 */
+    flex-grow: 1; /* 占据剩余空间 */
+    overflow-y: auto; /* 列表内部滚动 */
+    min-height: 0; /* 确保列表在没有内容时可以收缩，但有内容时可以溢出 */
+}
+
+/* 排序选项容器 */
+.sort-options {
+    margin-bottom: 20px; /* 下外边距 */
+}
+
+/* 排序选项标签 */
+.sort-options label {
+    display: block; /* 独占一行 */
+    margin-bottom: 8px; /* 下外边距 */
+    font-weight: 500; /* 字体粗细 */
+}
+
+/* 排序下拉选择框 */
+.sort-options select {
+    width: 100%; /* 宽度占满父容器 */
+    padding: 8px; /* 内边距 */
+    border-radius: var(--border-radius); /* 圆角 */
+    border: 1px solid #ddd; /* 边框 */
+    background-color: white; /* 背景色 */
+}
+
+/* 单个画师列表项 */
+.artist-item {
+    padding: 12px; /* 内边距 */
+    border-radius: var(--border-radius); /* 圆角 */
+    margin-bottom: 10px; /* 下外边距 */
+    cursor: pointer; /* 鼠标悬停显示手型 */
+    transition: all 0.2s; /* 过渡动画 */
+    border-left: 3px solid transparent; /* 左侧边框，用于选中状态 */
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; /* 防止名称过长撑开列表项 */
+}
+
+/* 画师列表项悬停效果 */
+.artist-item:hover {
+    background-color: #f0f0f0; /* 悬停背景色 */
+}
+
+/* 画师列表项选中状态 */
+.artist-item.active {
+    background-color: #e6e6fa; /* 选中背景色 */
+    border-left: 3px solid var(--primary-color); /* 左侧边框显示主题色 */
+}
+
+/* 画师名称样式 */
+.artist-name {
+    font-weight: 500; /* 字体粗细 */
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}
+
+/* 画师统计信息样式 */
+.artist-stats {
+    font-size: 0.8rem; /* 字号 */
+    color: #666; /* 字体颜色 */
+    margin-top: 5px; /* 上外边距 */
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}
+
+/* 主内容区 - 画廊（Gallery）*/
+.gallery {
+    background-color: var(--card-color); /* 应用卡片背景色 */
+    border-radius: var(--border-radius); /* 圆角 */
+    box-shadow: var(--shadow); /* 阴影 */
+    padding: 20px; /* 内边距 */
+    height: 100%; /* 占据其Grid单元格的全部高度 */
+    overflow-y: auto; /* 垂直滚动 */
+    
+    /* 核心修改：改为 Flex 布局，实现固定尺寸和自动换行 */
+    display: flex; 
+    flex-wrap: wrap; /* 允许项目换行 */
+    gap: 15px; /* 项目间距 */
+    align-content: flex-start; /* 内容从顶部开始排列，防止垂直居中 */
+    justify-content: flex-start; /* 内容从左侧开始排列，防止水平居中 */
+
+    min-width: 0; /* 确保 Flex 容器在必要时能收缩，但其内容可以溢出 */
+    grid-column: 2; /* 占据第二列 */
+    grid-row: 2; /* 占据第二行 */
+}
+
+/* 画师卡片 */
+.artist-card {
+    /* 直接设置固定宽度和高度 */
+    width: var(--artist-card-width); 
+    height: var(--artist-card-height); 
+    flex-shrink: 0; /* 强制不收缩 */
+    flex-grow: 0; /* 强制不增长 */
+    
+    border-radius: var(--border-radius); /* 圆角 */
+    overflow: hidden; /* 隐藏超出部分，确保图片圆角 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影 */
+    transition: transform 0.3s, box-shadow 0.3s; /* 过渡动画 */
+    cursor: pointer; /* 鼠标悬停显示手型 */
+    background-color: white; /* 背景色 */
+    
+    display: flex; /* Flex 布局使图片和信息垂直排列 */
+    flex-direction: column;
+}
+
+/* 画师卡片悬停效果 */
+.artist-card:hover {
+    transform: translateY(-5px); /* 向上轻微移动 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 阴影加深 */
+}
+
+/* 新增：画师卡片图片包装器，用于定位放大图标 */
+.artist-card-image-wrapper {
+    position: relative; /* 使内部的放大图标可以绝对定位 */
+    width: 100%;
+    height: 180px; /* 与 .artist-card-image 保持一致的高度 */
+    overflow: hidden; /* 隐藏超出部分 */
+    flex-shrink: 0;
+}
+
+/* 画师卡片图片 */
+.artist-card-image {
+    width: 100%; /* 宽度占满卡片 */
+    height: 100%; /* 高度占满容器 */
+    object-fit: cover; /* 图片裁剪以填充容器 */
+    display: block; /* 避免图片底部的小间隙 */
+}
+
+/* 放大图标样式 */
+.zoom-icon {
+    position: absolute;
+    top: 8px; /* 距离顶部 */
+    right: 8px; /* 距离右侧 */
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+    color: white; /* 图标颜色 */
+    border-radius: 50%; /* 圆形 */
+    width: 28px; /* 宽度 */
+    height: 28px; /* 高度 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: zoom-in; /* 鼠标悬停显示放大图标 */
+    z-index: 10; /* 确保在图片上方 */
+    opacity: 0; /* 默认隐藏 */
+    transition: opacity 0.2s ease; /* 悬停显示过渡 */
+
+    /* 新增：用于创建四个角样式 */
+    box-sizing: border-box; /* 确保 padding 不会增加总宽度 */
+    padding: 6px; /* 内部留白，给边框留出空间 */
+    border: 1px solid transparent; /* 基础透明边框 */
+    
+    /* 创建四个角 */
+    border-top-left-radius: 0; /* 重置，但其实是父元素的圆角 */
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* 放大图标伪元素，创建四个角的实际线条 */
+.zoom-icon::before,
+.zoom-icon::after {
+    content: '';
+    position: absolute;
+    width: 10px; /* 角线长度 */
+    height: 10px; /* 角线长度 */
+    border-color: white;
+    border-style: solid;
+    border-width: 0;
+}
+
+/* 左上角 */
+.zoom-icon::before {
+    top: 0;
+    left: 0;
+    border-top-width: 2px;
+    border-left-width: 2px;
+}
+
+/* 右下角 */
+.zoom-icon::after {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+}
+
+/* 鼠标悬停在卡片上时显示放大图标 */
+.artist-card:hover .zoom-icon {
+    opacity: 1;
+}
+
+/* 画师卡片信息区 */
+.artist-card-info {
+    padding: 12px; /* 内边距 */
+    flex-grow: 1; /* 占据剩余高度 */
+    overflow: hidden; /* 隐藏溢出内容 */
+    min-height: 0; /* 允许信息区内容溢出并滚动 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 画师卡片名称 */
+.artist-card-name {
+    font-weight: 600; /* 字体加粗 */
+    margin-bottom: 5px; /* 下外边距 */
+    /* 防止名称过长撑开卡片，而是显示省略号 */
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    flex-shrink: 0; /* 名称不收缩 */
+}
+
+/* 画师卡片统计信息 */
+.artist-card-stats {
+    font-size: 0.8rem; /* 字号 */
+    color: #666; /* 字体颜色 */
+    display: flex; /* Flex 布局 */
+    justify-content: space-between; /* 子项两端对齐 */
+    flex-shrink: 0; /* 统计信息不收缩 */
+    min-width: 0; /* 允许内部文本溢出 */
+    overflow: hidden; /* 隐藏溢出部分 */
+}
+/* 确保统计信息内部的 span 也不会强制撑开 */
+.artist-card-stats span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0; /* 允许其自身收缩 */
+}
+
+/* ====== 新增: 右侧列的包裹容器 ====== */
+.right-column-wrapper {
+    grid-column: 3; /* 占据第三列 */
+    grid-row: 2;    /* 占据第二行 (container 的第二行) */
+    display: grid;  /* 使其自身成为一个 Grid 容器 */
+    grid-template-rows: auto 1fr; /* 第一行 auto 高度给画师串面板，第二行 1fr 给详情面板 */
+    gap: var(--container-gap); /* 画师串面板和详情面板之间的间距 */
+    overflow: hidden; /* 防止内容溢出此容器 */
+}
+
+/* 右侧画师串生成区 */
+.artist-chain-panel {
+    background-color: var(--card-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    /* padding 和 max-height, overflow-y 等由展开/收起状态控制 */
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    min-width: 0;
+    grid-row: 1; /* 在 right-column-wrapper 的第一行 */
+
+    /* 默认状态：收起 (只显示标题和滑块) */
+    max-height: 120px; /* 调整默认收起高度，确保标题和开关可见 */
+    padding: 15px 20px 10px 20px; /* 调整默认 padding */
+    overflow-y: hidden; /* 默认隐藏滚动条 */
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* 添加过渡效果 */
+}
+
+/* 展开状态：显示完整内容并允许滚动 */
+.artist-chain-panel.expanded {
+    max-height: 300px; /* 展开后的最大高度 */
+    overflow-y: auto; /* 允许内部滚动 */
+    padding: 20px; /* 恢复正常 padding */
+}
+
+/* 禁用状态（无论展开收起，内容区域都禁用） */
+.artist-chain-panel.disabled .form-group,
+.artist-chain-panel.disabled .button-group {
+    opacity: 0.5; /* 视觉上的禁用效果 */
+    pointer-events: none; /* 禁用所有鼠标事件 */
+}
+
+/* 当 panel 处于非 expanded 状态时，隐藏内部表单组和按钮组 */
+.artist-chain-panel:not(.expanded) .form-group,
+.artist-chain-panel:not(.expanded) .button-group {
+    display: none; /* 直接隐藏内部元素 */
+}
+
+
+.artist-chain-panel h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.artist-chain-panel .form-group {
+    margin-bottom: 10px;
+    flex-shrink: 0; /* 确保不收缩 */
+    min-width: 0; /* 允许内部内容溢出 */
+}
+.artist-chain-panel .button-group {
+    margin-top: 15px;
+    display: flex; /* 确保按钮组是 flex 容器 */
+    gap: 10px; /* 按钮间距 */
+    flex-wrap: wrap; /* 允许按钮在空间不足时换行 */
+    justify-content: flex-end; /* 按钮靠右对齐 */
+    flex-shrink: 0; /* 确保不收缩 */
+    min-width: 0; /* 允许内部内容溢出 */
+}
+.artist-chain-panel .button-group .btn {
+    flex-grow: 1; /* 按钮可以稍微增长占据空间 */
+    min-width: 100px; /* 最小宽度，防止过小 */
+}
+
+/* 开关滑块样式 */
+.switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+    cursor: pointer; /* 让整个容器可点击 */
+}
+.switch-container label[for="artistChainToggle"] {
+    cursor: pointer; /* 确保标签也可点击 */
+    margin-bottom: 0; /* 避免额外的 margin */
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+    flex-shrink: 0; /* 确保滑块不收缩 */
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(24px);
+    -ms-transform: translateX(24px);
+    transform: translateX(24px);
+}
+
+
+/* 右侧详情面板 */
+.detail-panel {
+    background-color: var(--card-color); /* 应用卡片背景色 */
+    border-radius: var(--border-radius); /* 圆角 */
+    box-shadow: var(--shadow); /* 阴影 */
+    padding: 20px; /* 内边距 */
+    height: 100%; /* 占据其Grid单元格的全部高度 (right-column-wrapper 的第二行) */
+    overflow-y: auto; /* 垂直滚动 */
+    display: flex; /* 使用Flex布局让内容垂直排列 */
+    flex-direction: column;
+    flex-shrink: 0; /* 确保详情面板不收缩 */
+    min-width: 0; /* 确保在必要时其内容能溢出，而不是自身被压缩 */
+    grid-row: 2; /* 在 right-column-wrapper 的第二行 */
+    margin-top: 0; /* 移除原来的偏移 */
+}
+/* 确保详情面板内的部分内容不会被挤压 */
+.detail-panel .artist-detail-header,
+.detail-panel .detail-section:not(:last-child),
+.detail-panel .button-group {
+    flex-shrink: 0; /* 不收缩 */
+    min-width: 0; /* 防止内部内容阻止父元素收缩 */
+}
+/* 让可以滚动的部分（如果内容很多）占据剩余空间 */
+.detail-panel .form-group textarea,
+.detail-panel .style-description { /* 假设画风描述是可滚动的 */
+    flex-grow: 1; /* 占据剩余空间 */
+    min-height: 80px; /* 最小高度 */
+}
+
+
+/* 详情面板头部 */
+.artist-detail-header {
+    display: flex; /* Flex 布局 */
+    align-items: center; /* 垂直居中 */
+    margin-bottom: 20px; /* 下外边距 */
+    border-bottom: 1px solid #eee; /* 底部细线 */
+    padding-bottom: 15px; /* 底部内边距 */
+    min-width: 0; /* 防止内部内容阻止父元素收缩 */
+}
+
+/* 详情面板中的画师头像 */
+.artist-detail-image {
+    width: 80px; /* 宽度 */
+    height: 80px; /* 高度 */
+    border-radius: 50%; /* 圆形 */
+    object-fit: cover; /* 图片裁剪以填充容器 */
+    margin-right: 15px; /* 右外边距 */
+    flex-shrink: 0;
+}
+
+/* 详情面板中的画师名称 */
+.artist-detail-name {
+    font-size: 1.5rem; /* 字号 */
+    font-weight: 600; /* 字体加粗 */
+    overflow-wrap: break-word; /* 防止长名称溢出 */
+    min-width: 0; /* 防止名称过长撑开容器 */
+}
+
+/* 详情面板中的画师统计信息 */
+.artist-detail-stats {
+    font-size: 0.9rem; /* 字号 */
+    color: #666; /* 字体颜色 */
+    margin-top: 5px; /* 上外边距 */
+    min-width: 0; /* 防止统计信息过长撑开容器 */
+    overflow-wrap: break-word; 
+}
+
+/* 详情面板各部分通用样式 */
+.detail-section {
+    margin-bottom: 20px; /* 下外边距 */
+    min-width: 0; /* 防止内部内容阻止父元素收缩 */
+}
+
+/* 详情面板各部分标题 */
+.detail-section h3 {
+    margin-bottom: 10px; /* 下外边距 */
+    color: var(--primary-color); /* 应用主题色 */
+    font-size: 1.1rem; /* 字号 */
+}
+
+/* 标签列表容器 */
+.tag-list {
+    display: flex; /* Flex 布局 */
+    flex-wrap: wrap; /* 允许标签换行 */
+    gap: 8px; /* 标签间距 */
+    min-width: 0; /* 防止内部内容阻止父元素收缩 */
+}
+
+/* 单个标签样式 */
+.tag {
+    background-color: #e6e6fa; /* 背景色 */
+    padding: 4px 10px; /* 内边距 */
+    border-radius: 20px; /* 大圆角 */
+    font-size: 0.8rem; /* 字号 */
+    flex-shrink: 0; /* 标签不收缩 */
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+}
+
+/* 表单组通用样式 */
+.form-group {
+    margin-bottom: 15px; /* 下外边距 */
+    min-width: 0; /* 防止内部内容阻止父元素收缩 */
+}
+
+/* 表单组标签 */
+.form-group label {
+    display: block; /* 独占一行 */
+    margin-bottom: 5px; /* 下外边距 */
+    font-weight: 500; /* 字体粗细 */
+}
+
+/* 表单输入框、文本域、选择框通用样式 */
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%; /* 宽度占满 */
+    padding: 8px 12px; /* 内边距 */
+    border: 1px solid #ddd; /* 边框 */
+    border-radius: var(--border-radius); /* 圆角 */
+    font-size: 0.9rem; /* 字号 */
+}
+
+/* 文本域特定样式 */
+.form-group textarea {
+    min-height: 80px; /* 最小高度 */
+    resize: vertical; /* 允许垂直方向调整大小 */
+}
+
+/* 按钮组 */
+.button-group {
+    display: flex; /* Flex 布局 */
+    gap: 10px; /* 按钮间距 */
+    margin-top: 20px; /* 上外边距 */
+    min-width: 0; /* 防止内部内容阻止父元素收缩 */
+    flex-wrap: wrap; /* 允许按钮换行 */
+}
+
+/* 按钮通用样式 */
+.btn {
+    padding: 10px 15px; /* 内边距 */
+    border: none; /* 无边框 */
+    border-radius: var(--border-radius); /* 圆角 */
+    cursor: pointer; /* 鼠标悬停显示手型 */
+    font-weight: 500; /* 字体粗细 */
+    transition: background-color 0.2s; /* 背景色过渡动画 */
+    flex-shrink: 0; /* 按钮不收缩 */
+}
+
+/* 主按钮样式 */
+.btn-primary {
+    background-color: var(--primary-color); /* 应用主题色 */
+    color: white; /* 文字颜色为白色 */
+}
+
+/* 辅助按钮样式 */
+.btn-secondary {
+    background-color: #e0e0e0; /* 背景色 */
+    color: var(--text-color); /* 文字颜色 */
+}
+
+/* 危险操作按钮（如删除） */
+.btn-danger {
+    background-color: #dc3545; /* 红色 */
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* 按钮悬停效果 */
+.btn:hover {
+    opacity: 0.9; /* 降低透明度 */
+}
+
+/* 详情面板中的示例图片画廊 */
+.image-gallery {
+    display: grid; /* Grid 布局 */
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* 调整为更小列 */
+    gap: 10px; /* 图片间距 */
+    margin-top: 10px; /* 上外边距 */
+    min-width: 0; /* 防止内部内容阻止父元素收缩 */
+}
+
+/* 示例画廊中的单张图片 */
+.gallery-image {
+    position: relative; /* 用于放置删除按钮 */
+    width: 100%; /* 宽度占满 */
+    padding-bottom: 100%; /* 1:1 比例 */
+    overflow: hidden;
+    border-radius: 4px; /* 圆角 */
+    cursor: pointer; /* 鼠标悬停显示手型 */
+    transition: transform 0.2s; /* 过渡动画 */
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.gallery-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 图片裁剪以填充容器 */
+}
+
+/* 示例画廊图片悬停效果 */
+.gallery-image:hover {
+    transform: scale(1.05); /* 放大 */
+}
+.gallery-image .delete-sample-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0; /* 默认隐藏 */
+    transition: opacity 0.2s;
+}
+.gallery-image:hover .delete-sample-image {
+    opacity: 1; /* 悬停时显示 */
+}
+
+
+/* 模态框（用于图片放大预览） */
+.modal {
+    display: none; /* 默认隐藏 */
+    position: fixed; /* 固定定位，覆盖整个屏幕 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* 半透明黑色背景 */
+    z-index: 1000; /* 层级最高 */
+    align-items: center; /* Flex 子项垂直居中 */
+    justify-content: center; /* Flex 子项水平居中 */
+    cursor: zoom-out; /* 鼠标悬停显示缩放图标 */
+}
+
+/* 模态框内容区域（包含图片） */
+.modal-content {
+    position: relative; /* 用于图片拖动定位 */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 用于表单的模态框内容区域 */
+.modal-content-form {
+    background-color: var(--card-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    max-width: 90%; /* 将固定最大宽度改为视口宽度的百分比，防止在小屏幕上溢出 */
+    width: auto; /* 允许宽度根据内容自适应，但受限于max-width */
+    
+    max-height: 90vh; /* 新增：限制模态框的最大高度为视口高度的90% */
+    overflow-y: auto; /* 新增：当内容超出时，垂直滚动 */
+    
+    position: relative;
+    cursor: default;
+    
+    /* 确保内部flex布局或grid布局的子元素不会强制撑开容器 */
+    display: flex; /* 使用flex布局让内部元素垂直排列 */
+    flex-direction: column;
+}
+
+.modal-content-form h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+    flex-shrink: 0; /* 确保标题不收缩 */
+}
+
+/* 确保表单组在模态框内也能正常显示，不会因为flex-direction: column而挤压 */
+.modal-content-form .form-group,
+.modal-content-form .button-group {
+    flex-shrink: 0; /* 确保这些部分不收缩 */
+    min-width: 0; /* 防止内容过长时溢出 */
+}
+
+/* 如果你的文本域内容较多，确保它也能在模态框内适当地滚动 */
+.modal-content-form textarea {
+    min-height: 60px; /* 适当减小最小高度，为整体模态框高度留更多空间 */
+    resize: vertical;
+}
+
+/* 模态框中的图片 */
+.modal-image {
+    max-width: 90%; /* 图片最大宽度 */
+    max-height: 90%; /* 图片最大高度 */
+    object-fit: contain; /* 图片完整显示在容器内 */
+    display: block; /* 移除图片底部空白 */
+    cursor: grab; /* 默认手型，表示可拖动 */
+    position: absolute; /* 使图片可以自由拖动 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); /* 初始居中并无缩放 */
+    transition: none; /* 移除过渡，避免拖动时卡顿 */
+}
+
+
+/* 关闭模态框按钮 */
+.close-modal {
+    position: absolute; /* 绝对定位 */
+    top: 15px; /* 距离顶部 */
+    right: 15px; /* 距离右侧 */
+    color: white; /* 文字颜色 */
+    font-size: 30px; /* 字号 */
+    cursor: pointer; /* 鼠标悬停显示手型 */
+    background: none; /* 无背景 */
+    border: none; /* 无边框 */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 添加阴影，使其更清晰可见 */
+}
+
+/* 如果表单模态框也需要关闭按钮，可以调整 */
+.modal-content-form .close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    background: none;
+    border: none;
+}
+.modal-content-form .close-button:hover {
+    color: #333;
+}
+
+
+/* 响应式布局：当屏幕宽度小于 1200px 时 */
+@media (max-width: 1200px) {
+    .container {
+        grid-template-columns: 250px 1fr; /* 调整列布局：左侧边栏、主内容区 */
+        /* 新增两行用于画师串和详情面板 */
+        grid-template-rows: var(--header-height) minmax(0, 1fr) auto auto; 
+    }
+    .sidebar {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    .gallery {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    /* 在较小屏幕下，右侧包裹容器也要重新定位 */
+    .right-column-wrapper {
+        grid-column: 1 / 3; /* 占据所有两列 */
+        grid-row: 3; /* 移动到第三行 */
+        display: grid; /* 保持内部 Grid */
+        grid-template-rows: auto auto; /* 让画师串和详情面板都由内容决定高度 */
+        gap: var(--container-gap);
+    }
+
+    .artist-chain-panel {
+        grid-row: 1; /* 保持在 wrapper 的第一行 */
+        /* max-height 会在 expanded 类中被设置 */
+        max-height: 120px; /* 调整默认收起高度 */
+    }
+    .artist-chain-panel.expanded {
+        max-height: 250px; /* 调整展开高度 */
+    }
+
+    .detail-panel {
+        grid-row: 2; /* 保持在 wrapper 的第二行 */
+        max-height: 40vh; /* 限制最大高度 */
+    }
+
+    .gallery {
+        /* 在较小屏幕下，卡片宽度可以稍微调整，但仍保持固定 */
+        /* 不再需要 min-width: 0; 因为 Flex item 自身设置了宽度 */
+    }
+}
+
+/* 响应式布局：当屏幕宽度小于 768px 时 */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr; /* 单列布局 */
+        grid-template-rows: var(--header-height) auto auto auto auto; /* header, 侧边栏, 画廊, 画师串面板, 详情面板 */
+    }
+    /* 所有主要区域都占据单列 */
+    header, .sidebar, .gallery {
+        grid-column: 1;
+        height: auto; /* 让内容决定高度 */
+        max-height: 50vh; /* 限制最大高度 */
+        overflow-y: auto;
+        min-width: 0; 
+    }
+    .sidebar {
+        grid-row: 2;
+        max-height: 30vh; /* 侧边栏最大高度 */
+    }
+    .gallery {
+        grid-row: 3;
+        /* 在最小屏幕下，卡片宽度进一步调整 */
+        --artist-card-width: 180px; 
+        --artist-card-height: 220px;
+        justify-content: center; /* 居中显示卡片 */
+    }
+    
+    /* 在最小屏幕下，右侧包裹容器也要重新定位 */
+    .right-column-wrapper {
+        grid-column: 1;
+        grid-row: 4; /* 移动到第四行 */
+        grid-template-rows: auto auto; /* 让画师串和详情面板都由内容决定高度 */
+    }
+    .artist-chain-panel {
+        grid-row: 1;
+        max-height: 120px; /* 调整默认收起高度 */
+    }
+    .artist-chain-panel.expanded {
+        max-height: 200px; /* 进一步调整展开高度 */
+    }
+    .detail-panel {
+        grid-row: 2;
+        max-height: 50vh;
+    }
+    .image-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+
+    /* 小屏幕下，表单模态框的内边距和宽度 */
+    .modal-content-form {
+        padding: 20px; /* 在小屏幕上减小内边距 */
+        max-width: 95%; /* 进一步增加宽度占比 */
+    }
+}

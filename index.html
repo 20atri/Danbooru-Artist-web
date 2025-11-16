@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danbooru画师画风收集工具</title>
+    <link rel="stylesheet" href="style.css"> <!-- 引入 CSS 文件 -->
+</head>
+<body>
+    <!-- 整个页面的主要容器，采用 Grid 布局 -->
+    <div class="container">
+        <!-- 页面顶部 Header，包含 Logo、搜索栏和用户操作按钮 -->
+        <header>
+            <div class="logo">Danbooru画师收集</div>
+            <div class="search-bar">
+                <input type="text" id="searchArtist" placeholder="搜索画师或标签...">
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-secondary" id="addArtistBtn">添加画师</button>
+                <button class="btn btn-secondary" id="exportDataBtn">导出数据</button>
+            </div>
+        </header>
+
+        <!-- 左侧边栏，包含排序选项和画师列表 -->
+        <div class="sidebar">
+            <div class="sort-options">
+                <label for="sortBy">排序方式</label>
+                <select id="sortBy">
+                    <option value="count">Danbooru收集数量</option>
+                    <option value="name">首字母顺序</option>
+                    <option value="date">创建时间</option>
+                </select>
+            </div>
+
+            <h2>画师列表</h2>
+            <div class="artist-list" id="artistList">
+                <!-- 画师列表将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 中间主内容区，以画廊形式展示画师卡片 -->
+        <div class="gallery" id="gallery">
+            <!-- 画师卡片将通过JavaScript动态生成 -->
+        </div>
+
+        <!-- 新增：右侧列包装容器，用于管理画师串生成区和详情面板 -->
+        <div class="right-column-wrapper">
+            <!-- 右侧画师串生成区 -->
+            <div class="artist-chain-panel" id="artistChainPanel">
+                <h3>画师串生成器</h3>
+                <div class="switch-container">
+                    <label for="artistChainToggle">启用画师串组合</label>
+                    <label class="switch">
+                        <input type="checkbox" id="artistChainToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="artistChainInput">画师触发词串</label>
+                    <textarea id="artistChainInput" rows="5" placeholder="手动输入或点击画廊卡片添加触发词..." disabled></textarea>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="copyArtistChainBtn" disabled>复制画师串</button>
+                    <button class="btn btn-primary" id="saveArtistChainBtn" disabled>保存为新画师</button>
+                </div>
+            </div>
+
+            <!-- 右侧详情面板，显示选中画师的详细信息和编辑表单 -->
+            <div class="detail-panel">
+                <div class="artist-detail-header">
+                    <!-- 画师头像和基本信息 -->
+                    <!-- 注意: 这里的图片路径是相对根目录的 /images，由服务器托管 -->
+                    <img src="/images/placeholder-artist.png" alt="画师头像" class="artist-detail-image" id="detailArtistImage">
+                    <div>
+                        <div class="artist-detail-name" id="detailArtistName">选择画师查看详情</div>
+                        <div class="artist-detail-stats" id="detailArtistStats">点击左侧列表或画廊中的画师查看详情</div>
+                    </div>
+                </div>
+
+                <!-- 画风标签区 -->
+                <div class="detail-section">
+                    <h3>画风标签</h3>
+                    <div class="tag-list" id="styleTags">
+                        <!-- 标签将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 代表作品区，以小图画廊形式展示 -->
+                <div class="detail-section">
+                    <h3>代表作品</h3>
+                    <div class="image-gallery" id="sampleImages">
+                        <!-- 示例图片将通过JavaScript动态生成 -->
+                    </div>
+                    <div class="button-group" style="margin-top: 10px;">
+                        <button class="btn btn-secondary" id="addSampleImageBtn">添加示例图</button>
+                    </div>
+                </div>
+
+                <!-- 画师信息编辑表单 -->
+                <div class="detail-section">
+                    <h3>画师信息</h3>
+                    <div class="form-group">
+                        <label for="editArtistName">画师名称</label>
+                        <input type="text" id="editArtistName">
+                    </div>
+                    <div class="form-group">
+                        <label for="artistId">画师ID (多个ID用逗号分隔)</label>
+                        <input type="text" id="artistId">
+                    </div>
+                    <div class="form-group">
+                        <label for="trainingCount">Danbooru训练量 (多个画师用逗号分隔)</label>
+                        <input type="text" id="trainingCount">
+                    </div>
+                    <div class="form-group">
+                        <label for="editPreviewImage">预览图</label>
+                        <input type="file" id="editPreviewImage" accept="image/*">
+                        <img id="currentPreviewImage" src="/images/placeholder-artist.png" alt="当前预览图" style="max-width: 100px; max-height: 100px; margin-top: 10px; display: block;">
+                    </div>
+                    <div class="form-group">
+                        <label for="editTags">画风标签 (用逗号分隔)</label>
+                        <input type="text" id="editTags">
+                    </div>
+                    <div class="form-group">
+                        <label for="triggerWords">触发词 (用逗号分隔)</label>
+                        <textarea id="triggerWords"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="styleDescription">画风描述</label>
+                        <textarea id="styleDescription"></textarea>
+                    </div>
+                </div>
+
+                <!-- 保存/取消按钮组 -->
+                <div class="button-group">
+                    <button class="btn btn-primary" id="saveBtn">保存更改</button>
+                    <button class="btn btn-secondary" id="cancelBtn">取消</button>
+                    <button class="btn btn-danger" id="deleteArtistBtn">删除画师</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图片放大预览模态框 -->
+    <div class="modal" id="imageModal">
+        <button class="close-modal" id="closeModal">&times;</button>
+        <div class="modal-content">
+            <img src="" alt="放大预览" class="modal-image" id="modalImage">
+        </div>
+    </div>
+
+    <!-- 添加画师模态框 -->
+    <div class="modal" id="addArtistModal">
+        <div class="modal-content-form">
+            <h2>添加新画师</h2>
+            <div class="form-group">
+                <label for="newArtistName">画师名称</label>
+                <input type="text" id="newArtistName" required>
+            </div>
+            <div class="form-group">
+                <label for="newArtistId">画师ID (多个ID用逗号分隔)</label>
+                <input type="text" id="newArtistId" required>
+            </div>
+            <div class="form-group">
+                <label for="newTrainingCount">Danbooru训练量 (多个画师用逗号分隔)</label>
+                <input type="text" id="newTrainingCount" value="0">
+            </div>
+            <div class="form-group">
+                <label for="newPreviewImage">预览图</label>
+                <input type="file" id="newPreviewImage" accept="image/*">
+                <img id="newPreviewImageDisplay" src="/images/placeholder-artist.png" alt="预览图" style="max-width: 100px; max-height: 100px; margin-top: 10px; display: block;">
+            </div>
+            <div class="form-group">
+                <label for="newTags">画风标签 (用逗号分隔)</label>
+                <input type="text" id="newTags">
+            </div>
+            <div class="form-group">
+                <label for="newTriggerWords">触发词 (用逗号分隔)</label>
+                <textarea id="newTriggerWords"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="newStyleDescription">画风描述</label>
+                <textarea id="newStyleDescription"></textarea>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" id="createArtistBtn">创建画师</button>
+                <button class="btn btn-secondary" id="closeAddArtistModal">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加示例图模态框 -->
+    <div class="modal" id="addSampleImageModal">
+        <div class="modal-content-form">
+            <h2>添加示例图</h2>
+            <div class="form-group">
+                <label for="newSampleImageFiles">选择图片 (可多选)</label>
+                <input type="file" id="newSampleImageFiles" accept="image/*" multiple required>
+                <div id="newSampleImagesPreview" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                    <!-- 预览图将在这里显示 -->
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" id="saveSampleImagesBtn">添加图片</button>
+                <button class="btn btn-secondary" id="closeAddSampleImageModal">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script> <!-- 引入 JavaScript 文件 -->
+</body>
+</html>
