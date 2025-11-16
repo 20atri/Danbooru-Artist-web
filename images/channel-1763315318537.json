@@ -1,0 +1,21 @@
+{
+  "name": "channel",
+  "artistId": [
+    "channel"
+  ],
+  "previewImage": "/images/unknown-general-1.jpg",
+  "trainingCount": [
+    220
+  ],
+  "triggerWords": [
+    "channel"
+  ],
+  "styleDescription": "2d,简约,平涂",
+  "createTime": "2025-11-16",
+  "tags": [
+    "2d",
+    "cag"
+  ],
+  "sampleImages": [],
+  "id": 1763315318537
+}
