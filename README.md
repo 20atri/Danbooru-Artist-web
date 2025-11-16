@@ -1,60 +1,75 @@
 # Danbooru-Artist-web
-Danbooru简易的存储工具，由web前端运行
-# Danbooru 画师画风收集工具
 
 这是一个由AI生成的建议程序。用于收集、管理和浏览 Danbooru 风格画师及其画风信息的桌面应用程序。它允许用户存储画师详情、预览图、代表作品、画风标签和触发词，并提供一个便捷的画师串组合生成器。
 
-## 功能特性
+---
+
+### 应用主页预览
+
+这是一个展示应用程序主要界面的截图，帮助你快速了解其外观和布局。
+
+![Danbooru Artist Web Homepage](images/Homepage%20of%20Danbooru-Artist-web(Can%20be%20del).png)
+
+---
+
+### 功能特性
 
 *   **画师管理**:
     *   添加、编辑和删除画师信息。
     *   存储画师名称、Danbooru ID、训练量、预览图、画风标签、触发词和画风描述。
+
 *   **画廊展示**:
     *   以卡片形式直观展示所有画师，支持按训练量、名称、创建时间排序。
     *   支持搜索功能，快速查找画师或相关信息。
+
 *   **代表作品**:
     *   为每个画师上传和管理多张代表作品示例图。
     *   支持点击图片进行放大预览（可拖动和缩放）。
+
 *   **画师串生成器**:
     *   一个可切换的面板，用于组合多个画师的触发词。
     *   点击画廊中的画师卡片可自动将触发词添加到画师串中（自动去重）。
     *   支持复制生成的画师串到剪贴板。
     *   可以将生成的画师串保存为一个新的画师，并自动填充触发词、ID和训练量。
+
 *   **数据导出**: 将所有画师数据导出为 JSON 文件，方便备份或分享。
 *   **本地存储**: 所有画师数据和图片都存储在本地文件系统，不依赖外部数据库。
 
-## 技术栈
+### 技术栈
 
 *   **前端**:
-    *   HTML5: 页面结构
-    *   CSS3: 页面样式 (包含响应式布局)
-    *   JavaScript (ES6+): 客户端逻辑、DOM 操作、API 调用
+    *   `HTML5`: 页面结构
+    *   `CSS3`: 页面样式 (包含响应式布局)
+    *   `JavaScript (ES6+)`: 客户端逻辑、DOM 操作、API 调用
+
 *   **后端**:
-    *   Node.js: 运行时环境
-    *   Express.js: Web 框架，提供 RESTful API
-    *   Multer: 处理文件上传
+    *   `Node.js`: 运行时环境
+    *   `Express.js`: Web 框架，提供 RESTful API
+    *   `Multer`: 处理文件上传
+
 *   **数据存储**: 本地文件系统 (以 JSON 文件形式存储每个画师的数据，图片单独存储)。
 
-## 如何运行
+### 如何运行
 
-### 1. 首次运行设置 (First-Time Setup)
+#### 1. 首次运行设置 (First-Time Setup)
 
 这是您第一次运行此应用程序时需要执行的步骤。
 
-1.  **安装 Node.js**:
-    *   确保您的计算机已安装 Node.js (推荐 LTS 版本)。Node.js 通常会附带 npm (Node Package Manager)。
-    *   您可以从 [Node.js 官网](https://nodejs.org/) 下载并安装。
-2.  **运行设置脚本**:
-    *   双击运行 `setup_first_run.bat` 文件。
-    *   此脚本将检查 Node.js 是否安装，然后自动安装所有必要的项目依赖。
-    *   **重要**: 如果 `npm install` 失败，请检查您的网络连接或 npm 配置，并确保 Node.js 正确安装。
+**1.1 安装 Node.js**:
+*   确保您的计算机已安装 Node.js (推荐 LTS 版本)。Node.js 通常会附带 `npm` (Node Package Manager)。
+*   您可以从 Node.js 官网 (https://nodejs.org/) 下载并安装。
 
-### 2. 启动应用程序 (Start Application)
+**1.2 运行设置脚本**:
+*   双击运行 `setup_first_run.bat` 文件。
+*   此脚本将检查 Node.js 是否安装，然后自动安装所有必要的项目依赖。
+*   **重要**: 如果 `npm install` 失败，请检查您的网络连接或 npm 配置，并确保 Node.js 正确安装。
+
+#### 2. 启动应用程序 (Start Application)
 
 完成首次运行设置后，您可以随时通过以下方式启动应用程序：
 
-1.  **双击运行 `start_app.bat` 文件。**
-2.  脚本将自动启动后端服务器，并在几秒钟后在您的默认浏览器中打开应用程序界面 (`http://localhost:3000/`)。
+**2.1** 双击运行 `start_app.bat` 文件。
+**2.2** 脚本将自动启动后端服务器，并在几秒钟后在您的默认浏览器中打开应用程序界面 (`http://localhost:3000/`)。
 
 ### 3. 使用方法
 
@@ -71,21 +86,24 @@ Danbooru简易的存储工具，由web前端运行
     *   点击 "保存为新画师" 会将当前画师串内容作为触发词填充到 "添加新画师" 模态框，并尝试匹配现有画师的 ID 和训练量。
 *   **导出数据**: 点击右上角的 "导出数据" 按钮，可以将所有画师数据下载为 JSON 文件。
 
-## 项目结构
-.
-├── images/ # 存储画师预览图、示例图和画师JSON数据文件
-├── node_modules/ # Node.js 依赖库 (npm install 后生成)
-├── index.html # 应用程序的HTML主页面
-├── package-lock.json # npm 依赖版本锁定文件
-├── package.json # 项目依赖配置
-├── script.js # 前端JavaScript逻辑
-├── server.js # 后端Node.js Express 服务器
-├── style.css # 应用程序的CSS样式
-├── start_app.bat # 启动应用程序的Windows批处理脚本
-└── setup_first_run.bat # 首次运行设置的Windows批处理脚本
-└── README.md # 本文档
+### 项目结构
 
-## 注意事项
+```
+.
+├── images/                    # 存储画师预览图、示例图和画师JSON数据文件
+├── node_modules/              # Node.js 依赖库 (npm install 后生成)
+├── index.html                 # 应用程序的HTML主页面
+├── package-lock.json          # npm 依赖版本锁定文件
+├── package.json               # 项目依赖配置
+├── script.js                  # 前端JavaScript逻辑
+├── server.js                  # 后端Node.js Express 服务器
+├── style.css                  # 应用程序的CSS样式
+├── start_app.bat              # 启动应用程序的Windows批处理脚本
+├── setup_first_run.bat        # 首次运行设置的Windows批处理脚本
+└── README.md                  # 本文档
+```
+
+### 注意事项
 
 *   所有数据和图片都存储在 `images/` 文件夹中。请勿随意删除此文件夹下的文件，除非您确定不再需要它们。
 *   应用程序默认运行在 `http://localhost:3000/`。如果此端口被占用，服务器启动可能会失败。
