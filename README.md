@@ -6,7 +6,7 @@
 
 ### 应用主页预览
 
-这是一个展示应用程序主要界面的截图，帮助你快速了解其外观和布局。
+这是主界面：
 
 ![Danbooru Artist Web Homepage](images/Homepage%20of%20Danbooru-Artist-web(Can%20be%20del).png)
 
