@@ -1,4 +1,4 @@
-# Danbooru-.html
+# Danbooru-Artist-web
 Danbooru简易的存储工具，由web前端运行
 # Danbooru 画师画风收集工具
 
